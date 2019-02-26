@@ -97,3 +97,15 @@ compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+tasks.getByName('makePatches').configure({
+    group = "patching"
+})
+
+tasks.getByName('applyPatches').configure({
+    group = "patching"
+})
+
+tasks.getByName('resetSources').configure({
+    group = "patching"
+})
