@@ -6,9 +6,7 @@ buildscript {
             url 'https://plugins.gradle.org/m2/'
         }
 
-        flatDir {
-            dirs "D:\\Data\\Coding\\EquilinoxGradle\\build\\libs"
-        }
+       
         flatDir {
             dirs "lib"
         }
