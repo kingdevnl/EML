@@ -1,0 +1,8 @@
+.gradle
+.idea
+build
+lib/Equilinox
+lib/Equilinox.jar
+run
+src/main/equilinox
+src/main/resources

@@ -1,0 +1,99 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+
+        flatDir {
+            dirs "D:\\Data\\Coding\\EquilinoxGradle\\build\\libs"
+        }
+        flatDir {
+            dirs "lib"
+        }
+
+    }
+    dependencies {
+        classpath "nl.kingdev:EquilinoxGradle:1.0-SNAPSHOT"
+        classpath 'gradle.plugin.uk.jamierocks:propatcher:1.2.3'
+    }
+}
+
+
+group 'nl.kingdev'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'nl.kingdev.eg.egplugin'
+apply plugin: 'uk.jamierocks.propatcher'
+
+sourceCompatibility = 1.8
+
+
+sourceSets.main.java.srcDirs = ["src/main/equilinox", "src/main/eml"]
+
+
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+
+
+repositories {
+    mavenCentral()
+}
+
+patches {
+    root = file("lib/Equilinox")
+    target = file("src/main/equilinox")
+    patches = file("patches")
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/net.java.jinput/jinput
+    shade group: 'net.java.jinput', name: 'jinput', version: '2.0.9'
+
+    // https://mvnrepository.com/artifact/org.lwjgl.lwjgl/lwjgl
+    shade group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: '2.9.3'
+    // https://mvnrepository.com/artifact/org.lwjgl.lwjgl/lwjgl_util
+    shade group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: '2.9.3'
+    // https://mvnrepository.com/artifact/org.lwjgl.lwjgl/lwjgl_util_applet
+    shade group: 'org.lwjgl.lwjgl', name: 'lwjgl_util_applet', version: '2.9.3'
+
+
+
+}
+
+jar {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)) {
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
+    manifest {
+        attributes("Main-Class": "main.MainApp")
+    }
+    from('src/main/equilinox') {
+        include '*.glsl'
+        include '**/**.glsl'
+        include '**/**.txt'
+    }
+    from('src/main/eml') {
+        include '*.glsl'
+        include '**/**.glsl'
+        include '**/**.txt'
+    }
+
+    archivesBaseName = "Equilinox.jar"
+    archiveName = "Equilinox.jar"
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

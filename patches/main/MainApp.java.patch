@@ -1,0 +1,18 @@
+--- a/main\MainApp.java
++++ b/main\MainApp.java
+@@ -7,6 +7,7 @@
+ import gameManaging.GameManager;
+ import glRequestProcessing.GlRequestProcessor;
+ import guis.GuiMaster;
++import hook.MainHook;
+ import iconGenerator.IconRenderer;
+ import java.util.Iterator;
+ import java.util.List;
+@@ -23,6 +24,7 @@
+    public static final String VERSION_STRING = "Version 1.4.0c";
+ 
+    public static void main(String[] args) {
++      MainHook.hookMain(args);
+       ErrorLogger.init();
+       EngineMaster.init(Camera.getCamera());
+       FirstScreenUi screen = new FirstScreenUi();
