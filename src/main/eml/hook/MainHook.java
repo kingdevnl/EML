@@ -1,3 +1,7 @@
+/*
+    Copyright KingdevNL 2018-2019
+*/
+
 package hook;
 public class MainHook{
 	
