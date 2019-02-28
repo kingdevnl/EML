@@ -8,8 +8,14 @@
  import iconGenerator.IconRenderer;
  import java.util.Iterator;
  import java.util.List;
-@@ -23,6 +24,7 @@
-    public static final String VERSION_STRING = "Version 1.4.0c";
+@@ -19,10 +20,11 @@
+ public class MainApp {
+    public static final boolean CHEATS = false;
+    private static final String VER = "0";
+-   public static final String VERSION = "Equilinox_0";
+-   public static final String VERSION_STRING = "Version 1.4.0c";
++   public static final String VERSION = "Equilinox_0-EML";
++   public static final String VERSION_STRING = "Version 1.4.0c-EML";
  
     public static void main(String[] args) {
 +      MainHook.hookMain(args);
