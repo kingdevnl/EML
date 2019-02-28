@@ -1,5 +1,5 @@
---- a/main\MainApp.java
-+++ b/main\MainApp.java
+--- a/main/MainApp.java
++++ b/main/MainApp.java
 @@ -7,6 +7,7 @@
  import gameManaging.GameManager;
  import glRequestProcessing.GlRequestProcessor;
