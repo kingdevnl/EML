@@ -1,5 +1,7 @@
 package nl.kingdev.eml;
 
+import nl.kingdev.eml.event.PreInitEvent;
+import nl.kingdev.eml.eventapi.EventManager;
 import nl.kingdev.eml.loader.ModLoader;
 import nl.kingdev.eml.log.Logger;
 
@@ -34,6 +36,9 @@ public class EML {
         //Add all jars from the mods Folder to the classpath.
         modLoader.addToClassPath();
 
+        modLoader.initMods();
+
+        EventManager.call(new PreInitEvent());
 
     }
 

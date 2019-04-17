@@ -1,0 +1,10 @@
+{
+  "modid": "dummymod",
+  "name": "DummyMod",
+  "version": "1.0.0",
+  "authors": [
+    "Jasper",
+    "DessertCookie",
+    "Hexeption"
+  ]
+}

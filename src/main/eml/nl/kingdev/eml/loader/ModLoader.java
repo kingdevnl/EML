@@ -2,17 +2,26 @@ package nl.kingdev.eml.loader;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import nl.kingdev.eml.eventapi.EventManager;
 import nl.kingdev.eml.log.Logger;
+import nl.kingdev.eml.mod.EMLModID;
+import nl.kingdev.eml.mod.EMLModInfo;
+import nl.kingdev.eml.mod.EMLModInstance;
+import nl.kingdev.eml.mod.ModInfo;
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class ModLoader {
 
@@ -48,18 +57,89 @@ public class ModLoader {
         }
     }
 
+    ArrayList<URL> urls = new ArrayList<>();
+
     public void addToClassPath() {
-        ArrayList<URL> urlArrayList = new ArrayList<>();
+
 
         modJarsToLoad.forEach(file -> {
             try {
-                urlArrayList.add(file.toURI().toURL());
+                urls.add(file.toURI().toURL());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         });
 
-        urlClassLoader = new URLClassLoader(urlArrayList.toArray(new URL[urlArrayList.size()]), getClass().getClassLoader());
+        urlClassLoader = new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
+
+    }
+
+    public ModInfo readModInfo(File modFile) {
+
+        System.out.println("modFile = [" + modFile .getAbsolutePath()+ "]");
+        try {
+            ZipFile zipFile = new ZipFile(modFile);
+            ZipEntry infoEntry = zipFile.getEntry("modinfo.json");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(infoEntry)));
+            StringBuilder jsonString = new StringBuilder();
+            reader.lines().forEach(jsonString::append);
+
+            ModInfo modInfo = gson.fromJson(jsonString.toString(), ModInfo.class);
+
+            zipFile.close();
+
+            return modInfo;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    public void initMods() {
+
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+
+        configurationBuilder.addClassLoader(urlClassLoader);
+        configurationBuilder.addUrls(urls.toArray(new URL[urls.size()]));
+
+
+        Reflections r = new Reflections(configurationBuilder);
+
+        Set<Class<?>> typesAnnotatedWith = r.getTypesAnnotatedWith(EMLModID.class);
+
+        for (Class c : typesAnnotatedWith) {
+            try {
+                Object modInstance = c.newInstance();
+
+                for (Field f : c.getDeclaredFields()) {
+                    if (f.isAnnotationPresent(EMLModInstance.class)) {
+                        logger.logInfo("Setting mod instance.");
+                        f.set(null, modInstance);
+                    }
+                    if (f.isAnnotationPresent(EMLModInfo.class)) {
+                        String url = c.getProtectionDomain().getCodeSource().getLocation().getFile();
+                        File modJar = new File(url.replaceFirst("/", ""));
+                        ModInfo modInfo = readModInfo(modJar);
+                        System.out.println(modInfo.name);
+                        f.set(modInstance, modInfo);
+
+                        logger.logInfo("Setting mod info.");
+                    }
+
+
+
+                }
+                mods.add(modInstance);
+                EventManager.register(modInstance);
+                logger.logInfo("Initialized mod " + c.getName());
+
+
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

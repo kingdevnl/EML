@@ -1,6 +1,6 @@
 --- a/main/MainApp.java
 +++ b/main/MainApp.java
-@@ -12,6 +12,7 @@
+@@ -14,6 +14,7 @@
  import java.util.List;
  import mainGuis.EquilinoxGuis;
  import mainGuis.GuiRepository;
@@ -8,17 +8,12 @@
  import shops.ShopItem;
  import toolbox.MyKeyboard;
  import toolbox.OpenGlError;
-@@ -19,10 +20,11 @@
- public class MainApp {
-    public static final boolean CHEATS = false;
-    private static final String VER = "0";
--   public static final String VERSION = "Equilinox_0";
--   public static final String VERSION_STRING = "Version 1.4.0c";
-+   public static final String VERSION = "Equilinox_0-EML";
-+   public static final String VERSION_STRING = "Version 1.4.0c-EML";
+@@ -25,6 +26,8 @@
+    public static final String VERSION_STRING = "Version 1.5.0";
  
     public static void main(String[] args) {
++      //EML: Init
 +      EML.emlMain();
-       ErrorLogger.init();
+       ErrorManager.init(new File("EquilinoxErrorLogs"), "An error has caused the program to crash, sorry for the inconvenience! Please email the dev at thinmatrix@gmail.com and copy-paste the error message below:");
        EngineMaster.init(Camera.getCamera());
        FirstScreenUi screen = new FirstScreenUi();
