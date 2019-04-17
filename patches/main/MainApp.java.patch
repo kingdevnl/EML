@@ -1,13 +1,13 @@
 --- a/main/MainApp.java
 +++ b/main/MainApp.java
-@@ -7,6 +7,7 @@
- import gameManaging.GameManager;
- import glRequestProcessing.GlRequestProcessor;
- import guis.GuiMaster;
-+import hook.MainHook;
- import iconGenerator.IconRenderer;
- import java.util.Iterator;
+@@ -12,6 +12,7 @@
  import java.util.List;
+ import mainGuis.EquilinoxGuis;
+ import mainGuis.GuiRepository;
++import nl.kingdev.eml.EML;
+ import shops.ShopItem;
+ import toolbox.MyKeyboard;
+ import toolbox.OpenGlError;
 @@ -19,10 +20,11 @@
  public class MainApp {
     public static final boolean CHEATS = false;
@@ -18,7 +18,7 @@
 +   public static final String VERSION_STRING = "Version 1.4.0c-EML";
  
     public static void main(String[] args) {
-+      MainHook.hookMain(args);
++      EML.emlMain();
        ErrorLogger.init();
        EngineMaster.init(Camera.getCamera());
        FirstScreenUi screen = new FirstScreenUi();
