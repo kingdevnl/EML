@@ -1,0 +1,20 @@
+--- a/blueprints/Blueprint.java
++++ b/blueprints/Blueprint.java
+@@ -20,6 +20,8 @@
+ import java.util.Set;
+ import languages.GameText;
+ import mainGuis.ColourPalette;
++import nl.kingdev.eml.event.blueprint.EventLoadBlueprint;
++import nl.kingdev.eml.eventapi.EventManager;
+ import org.lwjgl.util.vector.Vector3f;
+ import picking.AABB;
+ import resourceProcessing.RequestProcessor;
+@@ -292,6 +294,8 @@
+ 
+    protected void indicateLoaded() {
+       this.loaded = true;
++      //EML: EventLoadBlueprint
++      EventManager.call(new EventLoadBlueprint(this));
+    }
+ 
+    protected void setSubBlueprints(List<SubBlueprint> subs) {

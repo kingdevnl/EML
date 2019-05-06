@@ -1,4 +1,4 @@
-package nl.kingdev.eml;
+package nl.kingdev.eml.natives;
 
 import nl.kingdev.eml.log.Logger;
 

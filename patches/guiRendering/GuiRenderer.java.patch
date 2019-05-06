@@ -1,0 +1,28 @@
+--- a/guiRendering/GuiRenderer.java
++++ b/guiRendering/GuiRenderer.java
+@@ -4,6 +4,8 @@
+ import basics.MasterRenderer;
+ import guis.GuiTexture;
+ import java.util.Iterator;
++import nl.kingdev.eml.event.render.EventRenderGUI;
++import nl.kingdev.eml.eventapi.EventManager;
+ import org.lwjgl.opengl.GL11;
+ import toolbox.OpenglUtils;
+ 
+@@ -25,7 +27,6 @@
+          GuiTexture gui = (GuiTexture)var3.next();
+          this.renderGui(gui);
+       }
+-
+       this.endRendering();
+    }
+ 
+@@ -65,6 +66,8 @@
+          }
+ 
+       }
++      //EML: EventRenderGUI
++      EventManager.call(new EventRenderGUI(gui));
+    }
+ 
+    private void endRendering() {

@@ -9,7 +9,7 @@
  import toolbox.MyKeyboard;
  import toolbox.OpenGlError;
 @@ -25,6 +26,8 @@
-    public static final String VERSION_STRING = "Version 1.5.0";
+    public static final String VERSION_STRING = "Version 1.6.0";
  
     public static void main(String[] args) {
 +      //EML: Init

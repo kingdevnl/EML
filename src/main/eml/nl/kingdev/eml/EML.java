@@ -1,9 +1,10 @@
 package nl.kingdev.eml;
 
-import nl.kingdev.eml.event.PreInitEvent;
+import nl.kingdev.eml.event.EventPreInit;
 import nl.kingdev.eml.eventapi.EventManager;
 import nl.kingdev.eml.loader.ModLoader;
 import nl.kingdev.eml.log.Logger;
+import nl.kingdev.eml.natives.NativeExtractor;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -38,7 +39,7 @@ public class EML {
 
         modLoader.initMods();
 
-        EventManager.call(new PreInitEvent());
+        EventManager.call(new EventPreInit());
 
     }
 
